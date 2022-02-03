@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserCategory index{% endblock %}
+
+{% block body %}
+    <h1>UserCategory index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Category</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_category in user_categories %}
+            <tr>
+                <td>{{ user_category.id }}</td>
+                <td>{{ user_category.category }}</td>
+                <td>
+                    <a href="{{ path('user_category_show', {'id': user_category.id}) }}">show</a>
+                    <a href="{{ path('user_category_edit', {'id': user_category.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_category_new') }}">Create new</a>
+{% endblock %}

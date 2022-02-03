@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Consultant{% endblock %}
+
+{% block body %}
+    <h1>Create new Consultant</h1>
+
+    {{ include('consultant/_form.html.twig') }}
+
+    <a href="{{ path('consultant_index') }}">back to list</a>
+{% endblock %}
