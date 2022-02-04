@@ -39,10 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private $category;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isVerified = false;
+ 
+    #[ORM\Column(type: 'boolean')]
+    private $isActived;
 
 
 
@@ -135,17 +134,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isVerified(): bool
+    public function getIsActived(): ?bool
     {
-        return $this->isVerified;
+        return $this->isActived;
     }
 
-    public function setIsVerified(bool $isVerified): self
+    public function setIsActived(bool $isActived): self
     {
-        $this->isVerified = $isVerified;
+        $this->isActived = $isActived;
 
         return $this;
     }
-
 
 }

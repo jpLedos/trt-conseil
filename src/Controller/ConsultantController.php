@@ -3,13 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Consultant;
+use App\Entity\User;
 use App\Form\ConsultantType;
 use App\Repository\ConsultantRepository;
+use App\Repository\UserCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[Route('/consultant')]
 class ConsultantController extends AbstractController
@@ -23,13 +31,49 @@ class ConsultantController extends AbstractController
     }
 
     #[Route('/new', name: 'consultant_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher ,UserCategoryRepository $UCatRepo): Response
     {
+        $user = new User();
         $consultant = new Consultant();
+        
         $form = $this->createForm(ConsultantType::class, $consultant);
+        $form ->add('email', EmailType::class, [
+                    'mapped' => false,
+                ] )
+                ->add('plainPassword', PasswordType::class, [
+                    // instead of being set onto the object directly,
+                    // this is read and encoded in the controller
+                    'mapped' => false,
+                    'attr' => ['autocomplete' => 'new-password'],
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Entrez un mot de passe',
+                        ]),
+                        new Length([
+                            'min' => 4,
+                            'minMessage' => 'Le mot de passe doit avoir {{ limit }} charactères',
+                            // max length allowed by Symfony for security reasons
+                            'max' => 4096,
+                        ]),
+                    ],
+                ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = new User();
+            $category = $UCatRepo->find(3);
+            $user->setCategory($category);
+            $user->setIsActived(true);
+            $user->setEmail($form->get('email')->getData());
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+            $entityManager->persist($user); 
+            $consultant->setUser($user);
             $entityManager->persist($consultant);
             $entityManager->flush();
 
@@ -58,7 +102,6 @@ class ConsultantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             return $this->redirectToRoute('consultant_index', [], Response::HTTP_SEE_OTHER);
         }
 

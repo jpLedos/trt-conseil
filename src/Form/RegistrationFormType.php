@@ -3,6 +3,7 @@
 namespace App\Form;
 use App\Entity\User;
 use App\Entity\UserCategory;
+use App\Repository\UserCategoryRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 
 
@@ -23,19 +25,23 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email')
-            
-
-            ->add('category', ChoiceType::class, [
-                'choices' => [
-                    "Candidat" => 1, 
-                    "Recruter" => 2
-                ],
-                   
+            ->add('category', EntityType::class, [
+                'class' => UserCategory :: class,
+                'query_builder' => function (UserCategoryRepository $uCat) {
+                    return $uCat->createQueryBuilder('u')
+                    ->andWhere('u.id <= :val')
+                    ->setParameter('val', 2)
+                    ->orderBy('u.id', 'ASC');
+                },
+                'choice_label' => "category",  
                 'multiple' => false,
                 'expanded' => true,
                 ])
+            ->add('isActived', HiddenType::class, [
+                    'data' => 0,
+                ])
         
-                ->add('agreeTerms', CheckboxType::class, [
+            ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([

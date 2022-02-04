@@ -19,6 +19,18 @@ class CandidateRepository extends ServiceEntityRepository
         parent::__construct($registry, Candidate::class);
     }
 
+    
+    public function findOneByUser($user): ?Candidate
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+
     // /**
     //  * @return Candidate[] Returns an array of Candidate objects
     //  */
@@ -36,15 +48,5 @@ class CandidateRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Candidate
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
 }

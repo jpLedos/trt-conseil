@@ -15,7 +15,7 @@
         <nav class="navbar navbar-light bg-light">
         <div <div>
             {% if app.user %}
-                Vous ete connecté avec : {{ app.user.email }},
+                Vous ete connecté avec : {{ app.user.id }},
                 <a href="{{ path('app_logout') }}">Se déconnecter</a>
             {% else %}
                 <a href="{{ path('app_login') }}">Se connecter</a><br />

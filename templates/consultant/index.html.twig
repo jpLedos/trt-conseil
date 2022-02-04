@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>email</th>
                 <th>Lastname</th>
                 <th>Firstname</th>
                 <th>actions</th>
@@ -18,6 +19,7 @@
         {% for consultant in consultants %}
             <tr>
                 <td>{{ consultant.id }}</td>
+                <td>{{ consultant.user.email }}</td>
                 <td>{{ consultant.lastname }}</td>
                 <td>{{ consultant.firstname }}</td>
                 <td>

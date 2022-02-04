@@ -19,6 +19,19 @@ class UserCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, UserCategory::class);
     }
 
+    public function findFilterCategory()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.id <= :val')
+            ->setParameter('val', 2)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(2)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
     // /**
     //  * @return UserCategory[] Returns an array of UserCategory objects
     //  */
@@ -34,7 +47,7 @@ class UserCategoryRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?UserCategory

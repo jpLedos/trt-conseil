@@ -23,6 +23,8 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //echo('bool : '.$form->get('isActived')->getData());
+            //die;
             // encode the plain password
             $user->setPassword(
             $userPasswordHasher->hashPassword(
@@ -30,7 +32,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            $user->setIsActived(false);
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
