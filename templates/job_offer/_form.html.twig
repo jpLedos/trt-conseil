@@ -1,0 +1,27 @@
+{{ form_start(form) }}
+
+    <div class="container ms-5 w-50 ">     
+        
+        <div class="form-group text-left mt-3">
+            {{ form_label(form.jobTitle ,'Intitulé' ,{'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.jobTitle, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.jobTitle) }}
+        </div> 
+
+        <div class="form-group text-left mt-3">
+            {{ form_label(form.city,'Ville' ,{'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.city) }}
+        </div> 
+
+   
+        <div class="form-group text-left mt-3">
+            {{ form_label(form.description,'Description' ,{'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.description) }}
+        </div> 
+
+        <button class="btn btn-primary my-4">{{ button_label|default('Enregistrer') }}</button>
+    </div> 
+
+{{ form_end(form) }}

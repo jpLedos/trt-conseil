@@ -5,39 +5,54 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Repository\UserCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
     #[Route('/', name: 'user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository, UserInterface $user): Response
+    public function index(UserRepository $userRepository, UserInterface $user, UserCategoryRepository $UCatRepo): Response
     {
-        if($user) {
-            echo ("la category du user : ".$user->getCategory()->getCategory()." / id: ".$user->getCategory()->getId());
-        }
-        
-      
+          
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
-            'user' => $user
+            'user' => $user,
+            'categories' => $UCatRepo->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, 
+                        EntityManagerInterface $entityManager , 
+                        UserPasswordHasherInterface $userPasswordHasher, 
+                        UserCategoryRepository $UCatRepo ): Response
     {
         $user = new User();
-        
+        $user->setIsActived('false');
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+                $user->setIsActived('true');
+                $user->setRoles(['ROLE_ADMIN']);
+                $category = $UCatRepo->find(4);
+                $user->setCategory($category);
+            
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('password')->getData()
+                    )
+                );
+
             $entityManager->persist($user);
             $entityManager->flush();
 

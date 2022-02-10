@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Candidat{% endblock %}
+
+{% block body %}
+    <div class="container w-75">
+        <h1>Details Candidat</h1>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ candidate.id }}</td>
+                </tr>
+                <tr>
+                    <th>email</th>
+                    <td>{{ candidate.user.email }}</td>
+                </tr>
+
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ candidate.lastname }}</td>
+                </tr>
+                <tr>
+                    <th>Prenom</th>
+                    <td>{{ candidate.firstname }}</td>
+                </tr>
+                <tr>
+                    <th>Cv</th>
+                    <td><a target="_blank" href="{{ asset('uploads/cv/' ~ candidate.cv) }}">{{candidate.cv}}</a></td>
+                </tr>
+                <tr>
+                    <th>Compte</th>
+                    <td>{{ candidate.user.isActived ? "ACTIF" : "ATTENTE VALIDATION" }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div><a class="btn {{ candidate.user.isActived ? "btn-danger" : "btn-primary" }}  "href="{{ path('candidate_toogle', {'id': candidate.id}) }}">{{ candidate.user.isActived ? "Desapprouver" : "Approuver" }}<a><div>
+        <a href="{{ path('candidate_index') }}">Retour à la liste</a><br />
+       
+
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ include('candidate/_delete_form.html.twig') }}
+        {% endif %}
+    </div>
+{% endblock %}

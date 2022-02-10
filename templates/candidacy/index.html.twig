@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Candidacy index{% endblock %}
+
+{% block body %}
+    <div class="container container-md w-75">
+        <h1>Liste des canditatures</h1>
+        <div class="filter mt-5 mb-3">
+            <label for="actived-select">Choisissez un filtre</label>
+            <select name="candidates" id="actived-select">
+                <option value="all">--Tous-</option>
+                <option value="actived">Validé</option>
+                <option value="desactived">A valider</option>
+            </select>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Candidat</th>
+                    <th>Recruteur</th>
+                    <th>Intitulé</th>
+                    <th>Ville</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for candidacy in candidacies %}
+                <tr class="toApprove {{candidacy.isValidated? 'actived' : '' }}" id= {{ candidacy.id }} >
+                    <td>{{ candidacy.id }}</td>
+                    <td>{{ candidacy.candidate.lastname }} {{ candidacy.candidate.firstname   }}</td>
+                    <td>{{ candidacy.jobOffer.recruiter.company }}</td>
+                    <td>{{ candidacy.jobOffer.jobTitle }}</td>
+                    <td>{{ candidacy.jobOffer.city }}</td>
+                    <td>
+                        <a href="{{ path('candidacy_show', {'id': candidacy.id}) }}">
+                             <img class="picto" title= "consulte" src="{{ asset('assets/images/view.png') }}" alt="view icon">
+                        </a>
+                        {% if is_granted('ROLE_ADMIN')%}
+                            <a href="{{ path('candidacy_edit', {'id': candidacy.id}) }}">
+                                <img class="picto" title= "edite" src="{{ asset('assets/images/edition.png') }}" alt="edit icon"></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Pas d'enregistrement trouvé<</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}
+{% block javascripts %}<script src={{ asset('assets/scripts/candidate.js') }}></script>{% endblock %}

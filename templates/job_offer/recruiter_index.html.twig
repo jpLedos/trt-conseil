@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offres d'emploi{% endblock %}
+
+{% block body %}
+    <div class="container w-75">
+        <h1>Liste de mes annonces</h1>
+
+        <div class="filter mt-5 mb-3">
+            <label for="actived-select">Actives</label>
+
+            <select id="actived-select">
+                <option value="all">--Tous-</option>
+                <option value="actived">Oui</option>
+                <option value="desactived">Non</option>
+            </select>
+        </div>
+        
+        <table id="tableParent" class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Recruteur</th>
+                    <th>Intitlé</th>
+                    <th>Ville</th>
+                    <th>Canditature <br>posées</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for job_offer in job_offers %}
+                <tr class=" toApprove {{job_offer.isvalidated ? 'actived' : '' }}" id= {{job_offer.id}} >
+                    <td>{{ job_offer.id }}</td>
+                    <td>{{ job_offer.recruiter.company }}</td>
+                    <td>{{ job_offer.jobTitle }}</td>
+                    <td>{{ job_offer.city }}</td>
+                    <td class="extend-candidacies" id="job{{ job_offer.id }}">
+                        {{ job_offer.candidacies|length }}   
+                        {% if job_offer.candidacies|length  > 0  %}
+                            <img class="small-picto" src="{{ asset('assets/images/curve-down-arrow.png') }}" alt="arrow icon">
+                        {% endif %}
+
+                    </td>
+                    
+                    <td><a href="{{ path('recruiter_job_offer_show', {'id': job_offer.id}) }}" >
+                        <img class="picto" title= "edit" src="{{ asset('assets/images/view.png') }}" alt="edit icon">
+                        </a>
+                    </td>
+                    {% for candidacy in job_offer.candidacies %}
+                    
+                        <tr class = "candidacy job{{ job_offer.id }}" style="display: none" >
+                        <td> </td>
+                        <td>{{ candidacy.candidate.firstname }} {{ candidacy.candidate.lastname }}</td> 
+                        {% if candidacy.isvalidated == true %}
+                            <td><a target="_blank" href="{{ asset('uploads/cv/' ~ candidacy.candidate.cv) }}">{{candidacy.candidate.cv}}</a></td>
+                        {% else %}
+                            <td></td>  
+                        {% endif %}
+                        <td>{{ candidacy.isvalidated ? "validée" : "Attente" }}</td>
+                        </tr>
+                    {% endfor %}
+    
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Pas d'enregistrement trouvé</td>
+                </tr>
+                
+            {% endfor %}
+            
+            </tbody>
+        </table>
+        <a href="{{ path('job_offer_new') }}">Créer une nouvelle annonce</a>
+    </div>
+{% endblock %}
+{% block javascripts %}<script src={{ asset('assets/scripts/candidate.js') }}></script>{% endblock %}

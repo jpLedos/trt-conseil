@@ -3,11 +3,11 @@
 {% block title %}Edit Consultant{% endblock %}
 
 {% block body %}
-    <h1>Edit Consultant</h1>
+    <div class="container w-75">
+        <h1>mise à jour Consultant</h1>
 
-    {{ include('consultant/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('consultant_index') }}">back to list</a>
-
-    {{ include('consultant/_delete_form.html.twig') }}
+        {{ include('consultant/_form-edit.html.twig', {'button_label': 'Enregistrer'}) }}
+        {{ include('consultant/_delete_form.html.twig') }}
+        <a href="{{ path('consultant_index') }}">Retour à la liste</a>
+    </div>
 {% endblock %}

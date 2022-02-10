@@ -12,8 +12,7 @@ class DefaultController extends AbstractController
     public function index(): Response
     {
         return $this->render('default/index.html.twig', [
-            'controller_name' => 'mon DefaultController',
-            'title' => 'jp projet'
+                        'title' => 'TRT Conseil'
         ]);
 
         //return new Response("mon nom est JP");

@@ -19,6 +19,23 @@ class JobOfferRepository extends ServiceEntityRepository
         parent::__construct($registry, JobOffer::class);
     }
 
+     /**
+    * @return JobOffer[] Returns an array of JobOffer objects
+     */
+    
+    public function findByValidated()
+    {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.isValidated = :val')
+            ->setParameter('val', true)
+            ->orderBy('j.id', 'ASC')
+            ->setMaxResults(100)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+
     // /**
     //  * @return JobOffer[] Returns an array of JobOffer objects
     //  */

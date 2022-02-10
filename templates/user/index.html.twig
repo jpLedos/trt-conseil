@@ -3,37 +3,52 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>Liste des utilisateurs</h1>
+    <div class="container w-75">
+        <h1>Liste des utilisateurs</h1>
 
-    <table class="table">
-        <thead class="red">
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>type</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.category.category }}</td>
-                <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+       <div class="filter mt-5 mb-3">
+            <label for="category-select">Choisissez un filtre</label>
 
-    <a href="{{ path('user_new') }}">Create new</a>
+            <select name="categories" id="category-select">
+                <option value="all">-- Tous --</option>
+                {% for category in categories %}
+                <option value="{{category.category}}">{{ category.category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Email</th>
+     
+                    <th>type</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr class="category {{ user.category.category }}">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.category.category }}</td>
+                    <td>
+
+                        <a href="{{ path('user_edit', {'id': user.id}) }}">
+                            <img class="picto" title= "edite" src="{{ asset('assets/images/edition.png') }}" alt="edit icon"></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('user_new') }}">Creation Nouvel Administrateur</a>
+    </div>
 {% endblock %}
+{% block javascripts %}<script src={{ asset('assets/scripts/users.js') }}></script>{% endblock %}

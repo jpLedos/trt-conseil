@@ -1,0 +1,23 @@
+{{ form_start(form) }}
+
+        <div class="form-group text-left mt-3">
+            {{ form_label(form.jobOffer,'Annonce' ,{'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.jobOffer, {'attr': {'class': 'form-select '}}) }}
+            {{ form_errors(form.jobOffer) }}
+        </div> 
+                <div class="form-group text-left mt-3">
+            {{ form_label(form.candidate,'Candidat' ,{'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.candidate, {'attr': {'class': 'form-select '}}) }}
+            {{ form_errors(form.candidate) }}
+        </div> 
+
+        <div class="form-group text-left mt-3">
+            {{ form_label(form.isValidated,'Validée' ,{'label_attr': {'class': 'form-check-label me-4'}}) }}
+            {{ form_widget(form.isValidated, {'attr': {'class': 'form-input'}}) }}
+            {{ form_errors(form.isValidated) }}
+        </div> 
+
+
+    {{ form_widget(form) }}
+    <button class="btn btn-primary my-4">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

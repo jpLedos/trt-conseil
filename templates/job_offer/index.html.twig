@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JobOffer index{% endblock %}
+
+{% block body %}
+
+    <div class="container w-75">
+        <h1>Liste des offres d'emploi</h1>
+
+         <div class="filter mt-5 mb-3">
+            <label for="actived-select">Choisissez un filtre</label>
+
+            <select name="candidates" id="actived-select">
+                <option value="all">--Tous-</option>
+                <option value="actived">Validé</option>
+                <option value="desactived">A valider</option>
+            </select>
+        </div>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Recruteur</th>
+                    <th>Intitlé</th>
+                    <th>Ville</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for job_offer in job_offers %}
+                <tr class="toApprove {{job_offer.isValidated? 'actived' : '' }}" id= {{job_offer.id}} >
+                    <td>{{ job_offer.id }}</td>
+                    <td>{{ job_offer.recruiter.company }}</td>
+                    <td>{{ job_offer.jobTitle }}</td>
+                    <td>{{ job_offer.city }}</td>
+                    <td>
+                        <a href="{{ path('job_offer_show', {'id': job_offer.id}) }}" >
+                        <img class="picto" title= "consulte" src="{{ asset('assets/images/view.png') }}" alt="view icon">
+                        </a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('job_offer_edit', {'id': job_offer.id}) }}" >
+                            <img class="picto" title= "edite" src="{{ asset('assets/images/edition.png') }}" alt="edit icon"></a>
+                        {% endif %}
+                    </td>
+
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Pas d'enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}
+{% block javascripts %}<script src={{ asset('assets/scripts/candidate.js') }}></script>{% endblock %}

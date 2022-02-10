@@ -1,0 +1,27 @@
+{% apply inky_to_html|inline_css(source('@css/foundation-emails.css')) %}
+<container>
+
+    <spacer size="32"></spacer>
+    <row>
+        <columns>
+            <h1>Nouvelle canditature</h1>
+        </columns>
+    </row>
+    <spacer size="32"></spacer>
+    <row>
+        <columns>
+            <p>{{message}}</p>
+        </columns>
+    </row>
+    <spacer size="32"></spacer>
+    <row>
+        <columns>
+            <p>Envoyé à {{ email.to[0].address }}</p></columns>
+        <columns>
+         <p>De {{ email.from[0].address }}</p>
+        </columns>
+
+
+</row>
+</container>
+{% endapply %}

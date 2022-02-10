@@ -3,28 +3,32 @@
 {% block title %}Recruiter{% endblock %}
 
 {% block body %}
-    <h1>Recruiter</h1>
+    <div class="container w-75">
+        <h1>Recruiter</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ recruiter.id }}</td>
-            </tr>
-            <tr>
-                <th>Company</th>
-                <td>{{ recruiter.company }}</td>
-            </tr>
-            <tr>
-                <th>City</th>
-                <td>{{ recruiter.city }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ recruiter.id }}</td>
+                </tr>
+                <tr>
+                    <th>Company</th>
+                    <td>{{ recruiter.company }}</td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td>{{ recruiter.city }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <a href="{{ path('recruiter_index') }}">back to list</a>
+        {% if not  recruiter.user.isActived %}
+            <a href="{{ path('recruiter_edit', {'id': recruiter.id}) }}">Modifier</a>
+        {% endif %}
 
-    <a href="{{ path('recruiter_edit', {'id': recruiter.id}) }}">edit</a>
-
-    {{ include('recruiter/_delete_form.html.twig') }}
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ include('recruiter/_delete_form.html.twig') }}
+        {% endif %}
+    </div>
 {% endblock %}

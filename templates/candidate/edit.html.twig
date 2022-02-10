@@ -1,14 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Candidate{% endblock %}
+{% block title %}Edit profil Candidat{% endblock %}
 
 {% block body %}
-    <h1>Edit Candidate</h1>
-    <h2>{{candidate.user.email }}</h2>
+    <div class="container w-75">
+        <h1>Modification du profil</h1>
+        <h2>{{candidate.user.email }}</h2>
 
-    {{ include('candidate/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('candidate/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
-    <a href="{{ path('candidate_index') }}">back to list</a>
+        <a class= "ms-5 mt-5" href="{{ path('candidate_show',{'id': candidate.id} )}}">Retour sans modification</a>
 
-    {{ include('candidate/_delete_form.html.twig') }}
+        {% if is_granted('ROLE_ADMIN')%}
+        <a href="{{ path('candidate_index') }}">retour à la liste</a>
+        {{ include('candidate/_delete_form.html.twig') }}
+        {%endif%}
+    </div>
 {% endblock %}

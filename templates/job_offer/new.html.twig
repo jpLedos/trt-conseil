@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Offre{% endblock %}
+
+{% block body %}
+    <h1>Nouvelle offre d'emploi</h1>
+
+    {{ include('job_offer/_form.html.twig') }}
+
+    <a href="{{ path('recruiter_job_offer_index') }}">Retour à la liste</a>
+{% endblock %}

@@ -8,40 +8,100 @@
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
             <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+            
         {% block stylesheets %}{% endblock %}
 
     </head>
-    <body>
-        <nav class="navbar navbar-light bg-light">
-        <div <div>
-            {% if app.user %}
-                Vous ete connecté avec : {{ app.user.id }},
-                <a href="{{ path('app_logout') }}">Se déconnecter</a>
-            {% else %}
-                <a href="{{ path('app_login') }}">Se connecter</a><br />
-                <a href="{{ path('app_register') }}">creer son compte</a>
-            {% endif %}
-        </div>
-    </nav>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid d-flex justify-content-around">
-            <a class="btn" href= "/register">Creer un compte</a>
-            <a class="btn" href="/user">les utilisateurs</a>
-            <a class="btn" href="/recruiter">Recruteur</a>
-            <a class="btn" href="/candidate">Candidat</a>
-            <a class="btn" href="/consultant">Consultant</a>
-            <a class="btn" href="/user/category">les categories</a>
+    <body> 
+        <header>
+            <div class="header-bg">
+                <nav class="navbar navbar-light float-end nav-login" >
+                    <div class="me-4"> 
+                        {% if app.user %}
+                            Mon profil : {{ app.user.category.category }} <br />
+                            <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}">Se connecter</a><br />
+                            <a href="{{ path('app_register') }}">creer son compte</a>
+                        {% endif %}
+                    </div>
+                </nav>
+                <div class="text-header">TRT CONSEIL RECRUTEMENTS<div>
+            </div>
             
-            {% if is_granted('ROLE_ADMIN') %}
-                <a class="btn" href="/user">Administration</a>
-            {% endif %}
-        </div>
-    </nav>
 
-    <div class="container mt-5"> 
-        {% block body %}{% endblock %}
-    </div>
-    {% block javascripts %}{% endblock %}
-    </body>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid d-flex justify-content-around">
+                    
+                {% if not app.user %}   
+                        <a class="btn" href="/login">Recruteur</a>
+                        <a class="btn" href="/login">Candidat</a>
+                        <a class="btn" href="/login">Offre d'emploi</a>
+                        <a class="btn" href="/login">Candidature</a>
+                {% else %} 
+                    {% if is_granted('ROLE_CANDIDATE')%}
+                        {% if not app.user.isActived %}
+                            <p>Votre compte est en attente de validation pour accedder aux services<p>
+                        {% else %}
+                            <a class="btn" href="{{ path('candidate_show',{'id': candidate.id} )}}">Mon profil</a>
+                            <a class="btn" href="{{ path('candidate_job_offer_index' )}}">Offres d'emploi</a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if app.user.category.category == 'Recruteur'%}
+                        {% if not app.user.isActived %}
+                            <p>Votre compte est en attente de validation pour accedder aux services<p>
+                        {% else %}
+                            
+                            <a class="btn" href="{{ path('recruiter_job_offer_index' )}}">Offres d'emploi</a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if app.user.category.category == 'Consultant' %}
+                        <a class="btn" href="/recruiter">Recruteur</a>
+                        <a class="btn" href="/candidate">Candidat</a>
+                        <a class="btn" href="/job/offer">Offre d'emploi</a>
+                        <a class="btn" href="/candidacy">Candidature</a>                      
+                    {% endif %}
+
+
+                    {% if app.user.category.category == 'Admin' %}
+                        <a class="btn" href="/consultant">Consultant</a>
+                        <a class="btn" href="/job/offer">Offre d'emploi</a>
+                        <a class="btn" href="/candidacy">Candidature</a> 
+                        <a class="btn" href="/user">les utilisateurs</a>
+                        <a class="btn" href="/user/category">les categories</a>   
+                    {% endif %}
+                  {% endif %} 
+                </div>
+            </nav>
+        </header>
+
+        <div class="main-block container mt-4"> 
+            {% block body %}{% endblock %}
+        </div>
+
+        <footer>
+            <div class ="social-icons">
+                <div class="logo-social">
+                    <a href="https://www.instagram.com/jpledos/" target="_blank" rel="noreferrer">
+                    <svg class="logo-social" xmlns="http://www.w3.org/2000/svg" width="41.818" height="31.252" viewBox="0 0 41.818 31.252">
+                    <path id="Icon_ionic-logo-facebook" data-name="Icon ionic-logo-facebook" d="M43.065,4.5H6.753C5.51,4.5,4.5,5.248,4.5,6.17V33.082c0,.922,1.01,1.67,2.253,1.67H24.909V22.777H20.03V18.366h4.879V15.1c0-3.908,3.657-6.035,8.366-6.035,2.253,0,4.677.126,5.24.181v4.081H34.763c-2.562,0-3.051.9-3.051,2.222v2.813h6.1l-.8,4.412h-5.3V34.752H43.065c1.244,0,2.254-.748,2.254-1.67V6.17C45.318,5.248,44.308,4.5,43.065,4.5Z" transform="translate(-4 -4)" fill="#F8F9FA" stroke="#2d728d" strokeWidth="1"/>
+                    </svg></a>
+                </div>
+
+                <div class="logo-social">
+                    <a href="https://www.instagram.com/jpledos/" target="_blank" rel="noreferrer"><svg  id="Icon_ionic-logo-instagram" data-name="Icon ionic-logo-instagram" xmlns="http://www.w3.org/2000/svg" width="45.716" height="32.579" viewBox="0 0 45.716 32.579">
+                    <path id="Tracé_231" data-name="Tracé 231" d="M36.882,7.215a11.719,11.719,0,0,1,6.727,1.994A5.953,5.953,0,0,1,46.407,14V27.577a6,6,0,0,1-2.8,4.793,11.629,11.629,0,0,1-6.727,1.994H17.834a11.719,11.719,0,0,1-6.726-1.994,5.953,5.953,0,0,1-2.8-4.793V14a6,6,0,0,1,2.8-4.793,11.629,11.629,0,0,1,6.726-1.994H36.882m0-2.715H17.834C10.5,4.5,4.5,8.776,4.5,14V27.577c0,5.226,6,9.5,13.334,9.5H36.882c7.334,0,13.334-4.276,13.334-9.5V14c0-5.226-6-9.5-13.334-9.5Z" transform="translate(-4.5 -4.5)" fill="#F8F9FA"/>
+                    <path id="Tracé_232" data-name="Tracé 232" d="M26.482,15.109a2.954,2.954,0,0,1-2.857-3.055,2.864,2.864,0,1,1,5.715,0A2.962,2.962,0,0,1,26.482,15.109Z" transform="translate(8.757 -3.958)" fill="#F8F9FA"/>
+                    <path id="Tracé_233" data-name="Tracé 233" d="M22.679,15.067A7.635,7.635,0,1,1,15.06,22.7a7.634,7.634,0,0,1,7.619-7.634m0-3.817A11.452,11.452,0,1,0,34.108,22.7,11.443,11.443,0,0,0,22.679,11.25Z" transform="translate(1.132 -6.208)" fill="#F8F9FA"/>
+                    </svg></a>
+                </div>
+            </div>
+            <p class = "copyright">Created by  JP LEDOS . Copyright © 2022 . </p>
+            
+        </footer>
+
+        {% block javascripts %}{% endblock %}
+        </body>
 </html>

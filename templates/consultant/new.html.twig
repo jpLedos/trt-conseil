@@ -3,9 +3,11 @@
 {% block title %}New Consultant{% endblock %}
 
 {% block body %}
-    <h1>Create new Consultant</h1>
+    <div class= 'container w-75'>
+        <h1>Creation d'un nouveau consultant</h1>
 
-    {{ include('consultant/_form.html.twig') }}
+        {{ include('consultant/_form.html.twig') }}
 
-    <a href="{{ path('consultant_index') }}">back to list</a>
+        <a href="{{ path('consultant_index') }}">back to list</a>
+    </div>
 {% endblock %}

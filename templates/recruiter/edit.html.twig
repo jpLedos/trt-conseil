@@ -1,13 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Recruiter{% endblock %}
+{% block title %}Edition profil Recruteur{% endblock %}
 
 {% block body %}
-    <h1>Edit Recruiter</h1>
+    <div class="container w-75">
+        <h1>Modification du profil</h1>
+        <h2>{{recruiter.user.email }}</h2>
+        {{ include('recruiter/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
-    {{ include('recruiter/_form.html.twig', {'button_label': 'Update'}) }}
+        <a class= "ms-5 mt-5" href="{{ path('recruiter_show',{'id': recruiter.id} )}}">Retour sans modification</a>
 
-    <a href="{{ path('recruiter_index') }}">back to list</a>
-
-    {{ include('recruiter/_delete_form.html.twig') }}
+        {% if is_granted('ROLE_ADMIN')%}
+            <a href="{{ path('recruiter_index') }}">retour à la liste</a>
+            {{ include('recruiter/_delete_form.html.twig') }}
+        {%endif%}
+    </div>
 {% endblock %}

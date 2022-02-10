@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Recruiter{% endblock %}
+{% block title %}Profil recruteur{% endblock %}
 
 {% block body %}
-    <h1>Create new Recruiter</h1>
+    <h1>Creation de votre profil</h1>
 
     {{ include('recruiter/_form.html.twig') }}
 
-    <a href="{{ path('recruiter_index') }}">back to list</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('recruiter_index') }}">back to list</a>
+    {% endif %}
 {% endblock %}

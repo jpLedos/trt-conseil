@@ -3,39 +3,56 @@
 {% block title %}Candidate index{% endblock %}
 
 {% block body %}
-    <h1>Candidate index</h1>
+    <div class="container w-75">                
+        <h1>Liste des candidats</h1>
+        <div class="filter mt-5 mb-3">
+            <label for="actived-select">Choisissez un filtre</label>
+            <select name="candidates" id="actived-select">
+                <option value="all">--Tous-</option>
+                <option value="actived">Validé</option>
+                <option value="desactived">A valider</option>
+            </select>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>email</th>
-                <th>Lastname</th>
-                <th>Firstname</th>
-                <th>Cv</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for candidate in candidates %}
-            <tr>
-                <td>{{ candidate.id }}</td>
-                <td>{{ candidate.user.email }}</td>
-                <td>{{ candidate.lastname }}</td>
-                <td>{{ candidate.firstname }}</td>
-                <td>{{ candidate.cv }}</td>
-                <td>
-                    <a href="{{ path('candidate_show', {'id': candidate.id}) }}">show</a>
-                    <a href="{{ path('candidate_edit', {'id': candidate.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>email</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for candidate in candidates %}
+                <tr class="toApprove {{candidate.user.isActived ? 'actived' : '' }}" id= {{candidate.id}} >
+                    <td>{{ candidate.id }}</td>
+                    <td>{{ candidate.user.email }}</td>
+                    <td>{{ candidate.lastname }}</td>
+                    <td>{{ candidate.firstname }}</td>
+                    <td>
+                        {% if not is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('consultant_candidate_show', {'id': candidate.id}) }}">
+                             <img class="picto" title= "edit" src="{{ asset('assets/images/view.png') }}" alt="view icon"></a>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('candidate_edit', {'id': candidate.id}) }}">
+                                <img class="picto" title= "edit" src="{{ asset('assets/images/edition.png') }}" alt="edit icon"></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('candidate_new') }}">Create new</a>
+    </div>
 {% endblock %}
+
+{% block javascripts %}<script src={{ asset('assets/scripts/candidate.js') }}></script>{% endblock %}
+
+

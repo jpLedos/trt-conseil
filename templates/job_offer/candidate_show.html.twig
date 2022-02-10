@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offre d'emploi TRT{% endblock %}
+
+{% block body %}
+    <h1>Detail de l'offre</h1>
+
+    <div class="container w-75">
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ job_offer.id }}</td>
+                </tr>
+                <tr>
+                    <th>JobTitle</th>
+                    <td>{{ job_offer.jobTitle }}</td>
+                </tr>
+                <tr>
+                    <th>Société</th>
+                    <td>{{ job_offer.recruiter.company }}</td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td>{{ job_offer.city }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ job_offer.description }}</td>
+                </tr>
+                <tr>
+                    <th>Déja Postulée</th>
+                    {% set isPostulated = false %}
+                    {% for candidacy in job_offer.candidacies %}
+                        {% if candidate.id == candidacy.candidate.id  %}
+                            {% set isPostulated = true %}
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ isPostulated ? "OUI" : "NON" }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        {% if not isPostulated == true %}
+        <a class="btn btn-primary" href="{{ path('candidacy_new_job_by_id', {'jobOffer': job_offer.id}) }}" >Postuler</a>
+        {% endif %}
+        <br />
+        <a href="{{ path('candidate_job_offer_index') }}">Retour à la liste des annonces</a><br />
+        
+
+    </div>
+
+
+{% endblock %}

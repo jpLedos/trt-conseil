@@ -3,37 +3,39 @@
 {% block title %}Consultant index{% endblock %}
 
 {% block body %}
-    <h1>Consultant index</h1>
+    <div class= "container w-75">
+        <h1>Consultant index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>email</th>
-                <th>Lastname</th>
-                <th>Firstname</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for consultant in consultants %}
-            <tr>
-                <td>{{ consultant.id }}</td>
-                <td>{{ consultant.user.email }}</td>
-                <td>{{ consultant.lastname }}</td>
-                <td>{{ consultant.firstname }}</td>
-                <td>
-                    <a href="{{ path('consultant_show', {'id': consultant.id}) }}">show</a>
-                    <a href="{{ path('consultant_edit', {'id': consultant.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>email</th>
+                    <th>Lastname</th>
+                    <th>Firstname</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for consultant in consultants %}
+                <tr>
+                    <td>{{ consultant.id }}</td>
+                    <td>{{ consultant.user.email }}</td>
+                    <td>{{ consultant.lastname }}</td>
+                    <td>{{ consultant.firstname }}</td>
+                    <td>
+                        <a href="{{ path('consultant_edit', {'id': consultant.id}) }}">
+                           <img class="picto" title= "edit" src="{{ asset('assets/images/edition.png') }}" alt="edit icon"></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('consultant_new') }}">Create new</a>
+        <a href="{{ path('consultant_new') }}">Créer un nouveau consultant</a>
+    </div>
 {% endblock %}

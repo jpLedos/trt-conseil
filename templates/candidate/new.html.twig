@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Candidate{% endblock %}
+{% block title %}Merci de completer votre profil{% endblock %}
 
 {% block body %}
-    <h1>Create new Candidate</h1>
+    <h1>Merci de completer votre profil</h1>
 
     {{ include('candidate/_form.html.twig') }}
 
+ {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('candidate_index') }}">back to list</a>
+{% endif %}
 {% endblock %}

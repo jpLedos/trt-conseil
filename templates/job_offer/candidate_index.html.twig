@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}JobOffer index{% endblock %}
+
+{% block body %}
+    <h1>Liste des offres d'emploi</h1>
+
+    <div class="filter mt-5 mb-3">
+        <label for="actived-select">Postulées</label>
+
+        <select id="actived-select">
+            <option value="all">--Tous-</option>
+            <option value="actived">Oui</option>
+            <option value="desactived">Non</option>
+        </select>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Recruteur</th>
+                <th>Intitlé</th>
+                <th>Ville</th>
+                <th>Description</th>
+                <th>Déja Postulé</th>
+                <th>Transmise</th>
+                <th></th>
+ 
+                {% if is_granted('ROLE_ADMIN') %}<th>actions</th>{% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for job_offer in job_offers %}
+                {% set isPostulated = false %}
+                {% set isValidated = false %}
+                {% for candidacy in job_offer.candidacies %}
+                    {% if candidate.id == candidacy.candidate.id  %}
+                        {% set isPostulated = true %}
+                        {% if candidacy.isvalidated == true %}
+                            {% set isValidated = true %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            <tr class=" jobOffer {{isPostulated ? 'actived' : '' }} {{isValidated ? 'validated' : '' }}" id= {{job_offer.id}} >
+                <td>{{ job_offer.id }}</td>
+                <td>{{ job_offer.recruiter.company }}</td>
+                <td>{{ job_offer.jobTitle }}</td>
+                <td>{{ job_offer.city }}</td>
+                <td>{{ job_offer.description }}</td>
+                <td>{{ isPostulated ? "OUI" : "NON" }}</td>
+                <td>{{ isValidated ? "OUI" : "NON" }}</td>
+
+                <td><a href="{{ path('candidate_job_offer_show', {'id': job_offer.id}) }}" >show</a><br /></td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+{% block javascripts %}<script src={{ asset('assets/scripts/candidateOffer.js') }}></script>{% endblock %}

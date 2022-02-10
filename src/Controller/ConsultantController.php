@@ -34,6 +34,7 @@ class ConsultantController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher ,UserCategoryRepository $UCatRepo): Response
     {
         $user = new User();
+        
         $consultant = new Consultant();
         
         $form = $this->createForm(ConsultantType::class, $consultant);
@@ -65,6 +66,7 @@ class ConsultantController extends AbstractController
             $category = $UCatRepo->find(3);
             $user->setCategory($category);
             $user->setIsActived(true);
+            $user->setRoles(['ROLE_CONSULTANT']);
             $user->setEmail($form->get('email')->getData());
             $user->setPassword(
                 $userPasswordHasher->hashPassword(

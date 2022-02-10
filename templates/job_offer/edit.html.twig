@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit JobOffer{% endblock %}
+
+{% block body %}
+    <div class="container w-75">
+        <h1>Modification de l'annonce</h1>
+
+        {{ include('job_offer/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+        {% if not is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('recruiter_job_offer_index') }}">Retour à la liste</a>
+          {% else %}
+            <a href="{{ path('job_offer_index') }}">Retour à la liste</a>
+        {% endif %}
+    </div>
+{% endblock %}

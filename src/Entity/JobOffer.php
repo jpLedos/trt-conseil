@@ -27,7 +27,17 @@ class JobOffer
     #[ORM\Column(type: 'boolean')]
     private $isValidated;
 
+    #[ORM\ManyToOne(targetEntity: Recruiter::class, inversedBy: 'jobOffers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $recruiter;
 
+    #[ORM\OneToMany(mappedBy: 'jobOffer', targetEntity: Candidacy::class, orphanRemoval: true)]
+    private $candidacies;
+
+    public function __construct()
+    {
+        $this->candidacies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -78,6 +88,48 @@ class JobOffer
     public function setIsValidated(bool $isValidated): self
     {
         $this->isValidated = $isValidated;
+
+        return $this;
+    }
+
+    public function getRecruiter(): ?Recruiter
+    {
+        return $this->recruiter;
+    }
+
+    public function setRecruiter(?Recruiter $recruiter): self
+    {
+        $this->recruiter = $recruiter;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Candidacy[]
+     */
+    public function getCandidacies(): Collection
+    {
+        return $this->candidacies;
+    }
+
+    public function addCandidacy(Candidacy $candidacy): self
+    {
+        if (!$this->candidacies->contains($candidacy)) {
+            $this->candidacies[] = $candidacy;
+            $candidacy->setJobOffer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidacy(Candidacy $candidacy): self
+    {
+        if ($this->candidacies->removeElement($candidacy)) {
+            // set the owning side to null (unless already changed)
+            if ($candidacy->getJobOffer() === $this) {
+                $candidacy->setJobOffer(null);
+            }
+        }
 
         return $this;
     }

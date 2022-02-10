@@ -17,8 +17,10 @@ class ConsultantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        
             ->add('lastname')
             ->add('firstname')
+            
         ;
     }
 

@@ -23,15 +23,26 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //echo('bool : '.$form->get('isActived')->getData());
-            //die;
-            // encode the plain password
+
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
+
+            switch($form->get('category')->getData()->getCategory()){
+                case 'Recruteur':
+                    $user->setRoles(["ROLE_RECRUITER"]);
+                    break;
+                case 'Candidat':
+                    $user->setRoles(["ROLE_CANDIDATE"]);
+                    break;
+                default :
+                break;
+            }
+            
+            
             $user->setIsActived(false);
             $entityManager->persist($user);
             $entityManager->flush();

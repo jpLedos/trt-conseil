@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CandidateRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CandidateRepository::class)]
@@ -25,6 +27,15 @@ class Candidate
     #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\OneToMany(mappedBy: 'candidate', targetEntity: Candidacy::class, orphanRemoval: true)]
+    private $candidacies;
+
+    public function __construct()
+    {
+        $this->candidacies = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -55,6 +66,13 @@ class Candidate
         return $this;
     }
 
+    public function getFullname(): ?string
+    {
+        return ($this->firstname);
+    }
+    
+
+
     public function getCv(): ?string
     {
         return $this->cv;
@@ -78,4 +96,37 @@ class Candidate
 
         return $this;
     }
+
+
+
+    /**
+     * @return Collection|Candidacy[]
+     */
+    public function getCandidacies(): Collection
+    {
+        return $this->candidacies;
+    }
+
+    public function addCandidacy(Candidacy $candidacy): self
+    {
+        if (!$this->candidacies->contains($candidacy)) {
+            $this->candidacies[] = $candidacy;
+            $candidacy->setCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidacy(Candidacy $candidacy): self
+    {
+        if ($this->candidacies->removeElement($candidacy)) {
+            // set the owning side to null (unless already changed)
+            if ($candidacy->getCandidate() === $this) {
+                $candidacy->setCandidate(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

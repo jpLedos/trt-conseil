@@ -6,6 +6,9 @@ use App\Entity\Candidate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class CandidateType extends AbstractType
 {
@@ -14,8 +17,23 @@ class CandidateType extends AbstractType
         $builder
             ->add('lastname')
             ->add('firstname')
-            ->add('cv')
-//            ->add('user')
+            ->add('cv', FileType::class, [
+                'label' => 'Votre CV (Au format PDF) ',
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Il faut un .PDF ! Merci',
+                    ])
+                ],
+            ])
+            // ...
+
         ;
     }
 
