@@ -4,6 +4,9 @@ composer require symfony/google-mailer --ignore-platform-reqs
 composer require twig/inky-extra --ignore-platform-reqs
 composer require twig/cssinliner-extra
 
+La base de donnée :
+
+
 symfony.exe server:ca:install 
 composer install --no-dev --optimize-autoloader --prefer-dist  --ignore-platform-reqs
 
