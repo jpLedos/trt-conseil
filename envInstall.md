@@ -10,6 +10,12 @@ La base de donnée :
 symfony.exe server:ca:install 
 composer install --no-dev --optimize-autoloader --prefer-dist  --ignore-platform-reqs
 
+
+project-trt\Procfile : sinon Forbidden 
+web: vendor/bin/heroku-php-apache2 public/
+
+
+
 #.env
 MAILER_DSN=gmail://youremail@gmail.com:yourpassword@default?verify_peer=0
 APP_ENV=prod 
