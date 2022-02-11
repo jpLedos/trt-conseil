@@ -127,16 +127,16 @@ class CandidacyController extends AbstractController
         if($candidacy->getIsValidated()) {
             
             $to =$candidacy->getJobOffer()->getRecruiter()->getUser()->getEmail();
-            $email = (new TemplatedEmail())
-            ->from($candidacy->getCandidate()->getUser()->getEmail())
-            ->to( $to )
-            ->replyTo($candidacy->getCandidate()->getUser()->getEmail())
-            ->subject('Candidature pour l\'annonce :'.$candidacy->getJobOffer()->getJobTitle())
-            ->attach($candidacy->getCandidate()->getCv())
-            ->htmlTemplate('canditature.html.twig')
-            ->context([
-                'message' => 'candidature de '.$candidacy->getCandidate()->getFullname(),
-            ]);
+            // $email = (new TemplatedEmail())
+            // ->from($candidacy->getCandidate()->getUser()->getEmail())
+            // ->to( $to )
+            // ->replyTo($candidacy->getCandidate()->getUser()->getEmail())
+            // ->subject('Candidature pour l\'annonce :'.$candidacy->getJobOffer()->getJobTitle())
+            // ->attach($candidacy->getCandidate()->getCv())
+            // ->htmlTemplate('canditature.html.twig')
+            // ->context([
+            //     'message' => 'candidature de '.$candidacy->getCandidate()->getFullname(),
+            // ]);
 
             // $mailer->send($email);
             $this->addFlash('success', 'candidature envoyée @ '.$to. ' !');
