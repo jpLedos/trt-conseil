@@ -3,7 +3,7 @@
 composer require symfony/google-mailer --ignore-platform-reqs
 composer require twig/inky-extra --ignore-platform-reqs
 composer require twig/cssinliner-extra
-
+composer install --ignore-platform-reqs
 La base de donnée :
 
 
