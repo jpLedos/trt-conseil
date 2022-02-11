@@ -126,11 +126,11 @@ class CandidacyController extends AbstractController
 
         if($candidacy->getIsValidated()) {
             
-            $to =$candidacy->getCandidate()->getUser()->getEmail();
+            $to =$candidacy->getJobOffer()->getRecruiter()->getUser()->getEmail();
             $email = (new TemplatedEmail())
             ->from($candidacy->getCandidate()->getUser()->getEmail())
-            ->to( new Address('jpledos@gmail.com') )
-            ->replyTo()
+            ->to( $to )
+            ->replyTo($candidacy->getCandidate()->getUser()->getEmail())
             ->subject('Candidature pour l\'annonce :'.$candidacy->getJobOffer()->getJobTitle())
             ->attach($candidacy->getCandidate()->getCv())
             ->htmlTemplate('canditature.html.twig')
@@ -139,6 +139,7 @@ class CandidacyController extends AbstractController
             ]);
 
             $mailer->send($email);
+            $this->addFlash('success', 'candidature envoyée @ '.$to. ' !');
         }
  
         return $this->redirectToRoute('candidacy_show', ['id'=>$candidacy->getId()], Response::HTTP_SEE_OTHER);

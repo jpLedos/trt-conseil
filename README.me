@@ -1,8 +1,36 @@
 # projet ECF BACK TRT CONSEIL 
 
-composer require symfony/google-mailer --ignore-platform-reqs
-composer require twig/inky-extra --ignore-platform-reqs
-composer require twig/cssinliner-extra
+This is a symfony project required for the formation Studi dev web fullstack.
 
-#.env
-MAILER_DSN=gmail://youremail@gmail.com:yourpassword@default?verify_peer=0
+## Getting Started to deploy it locally
+
+First , in you project folder :
+
+```
+git clone github.com/jpLedos/trt-conseil
+cd trt-conseil
+npm install
+```
+
+Second step , run the development server:
+
+```bash
+symfony server:start 
+or
+symfony server:start -d
+```
+
+Open [http://localhost:8000](http://localhost:8000) with your browser to see the result.
+
+
+## modify MAILER_DSN  : 
+
+###> symfony/google-mailer ###
+# Gmail SHOULD NOT be used on production, use it in development only.
+```
+  MAILER_DSN=gmail://youemailaddress@gmail.com:yourpassword@default
+```
+###< symfony/google-mailer ###
+###< symfony/framework-bundle ###
+
+

@@ -45,6 +45,12 @@
             </tbody>
         </table>
 
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
 
         <div><a class="btn mb-4 {{ candidacy.isvalidated ? "btn-danger" : "btn-primary" }}  "href="{{ path('candidacy_toogle', {'id': candidacy.id}) }}">{{ candidacy.isvalidated ? "Desapprouver" : "Approuver" }}<a><div>
         {% if is_granted('ROLE_ADMIN') %}
