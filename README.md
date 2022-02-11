@@ -38,3 +38,11 @@ symfony server:start -d
 ```
 
 Open [http://localhost:8000](http://localhost:8000) with your browser to see the result.
+
+
+## Getting Started to deploy it in heroku
+
+create a new app on heroku
+add resource : JawsDB MySQL
+Connect your github repository
+Deploy branch master
