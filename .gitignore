@@ -1,6 +1,6 @@
 
 ###> symfony/framework-bundle ###
-/envInstall.me
+/envInstall.md
 /.env.local
 /.env.local.php
 /.env.*.local
