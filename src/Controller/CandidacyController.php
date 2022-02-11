@@ -138,7 +138,7 @@ class CandidacyController extends AbstractController
                 'message' => 'candidature de '.$candidacy->getCandidate()->getFullname(),
             ]);
 
-            $mailer->send($email);
+            // $mailer->send($email);
             $this->addFlash('success', 'candidature envoyée @ '.$to. ' !');
         }
  
