@@ -4,15 +4,32 @@ This is a symfony project required for the formation Studi dev web fullstack.
 
 ## Getting Started to deploy it locally
 
-First , in you project folder :
+### First , in you project folder :
 
 ```
-git clone github.com/jpLedos/trt-conseil
+git clone [github.com/jpLedos/trt-conseil](https://github.com/jpLedos/trt-conseil) yourProject
 cd trt-conseil
-npm install
+composer install --ignore-platform-reqs
 ```
 
-Second step , run the development server:
+### Second step, configure your environnement :
+```
+APP_ENV=dev
+APP_SECRET=xxxxxxxxx 
+DATABASE_URL="mysql://root@127.0.0.1:3306/trt-conseil"
+```
+
+
+### modify MAILER_DSN  : 
+
+###> symfony/google-mailer ###
+## Gmail SHOULD NOT be used on production, use it in development only.
+```
+  MAILER_DSN=gmail://youemailaddress@gmail.com:yourpassword@default
+```
+
+
+### last  step , run the development server:
 
 ```bash
 symfony server:start 
@@ -21,16 +38,3 @@ symfony server:start -d
 ```
 
 Open [http://localhost:8000](http://localhost:8000) with your browser to see the result.
-
-
-## modify MAILER_DSN  : 
-
-###> symfony/google-mailer ###
-# Gmail SHOULD NOT be used on production, use it in development only.
-```
-  MAILER_DSN=gmail://youemailaddress@gmail.com:yourpassword@default
-```
-###< symfony/google-mailer ###
-###< symfony/framework-bundle ###
-
-
