@@ -118,7 +118,7 @@ class CandidacyController extends AbstractController
     
 
     #[Route('/{id}/toogle', name: 'candidacy_toogle', methods: ['GET'])]
-    public function toogle(Candidacy $candidacy, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    public function toogle(Candidacy $candidacy, EntityManagerInterface $entityManager): Response
     {
         $candidacy->setIsValidated(!$candidacy->getIsValidated());
         $entityManager->persist($candidacy);
